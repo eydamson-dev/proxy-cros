@@ -1,8 +1,7 @@
 const express = require('express');
 var cookieParser = require('cookie-parser');
 const axios = require('axios');
-const cors = require('cors')
-const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -101,8 +100,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-app.get('/api/products', async (req, res) => {
-
+app.get('/api/products', async (req, res)=>{
   let url = `${host_api}/products`;
   let headers = req.headers;
   let config = {
@@ -121,14 +119,60 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+
+app.get('/api/product', async (req, res) => {
+  let url = `${host_api}/product`;
+  if(req.query.uuid) {
+    url = `${url}?uuid=${req.query.uuid}`;
+  }
+
+  let headers = req.headers;
+  let config = {
+    url,
+    headers: {
+      withCredentials:true,
+      Cookie: headers.cookie
+    }
+  };
+
+  try {
+    let response = await makeRequest(config);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({error});
+  }
+});
+
+app.put('/api/product', async (req, res) => {
+  let url = `${host_api}/product`;
+  let headers = req.headers;
+  let config = {
+    url,
+    headers: {
+      withCredentials:true,
+      Cookie: headers.cookie
+    },
+    method:'PUT',
+    data: req.body,
+    params: {
+      uuid: req.query.uuid
+    }
+  };
+
+  try {
+    let response = await makeRequest(config);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({error});
+  }
+});
+
 app.get('/api/stores', async (req, res) => {
 
   let url = `${host_api}/stores`;
   if(req.query.uuid) {
     url = `${url}?uuid=${req.query.uuid}`;
   }
-
-  console.log(url);
 
   let headers = req.headers;
   let config = {
