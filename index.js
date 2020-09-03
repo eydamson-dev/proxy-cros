@@ -2,6 +2,7 @@ const express = require('express');
 var cookieParser = require('cookie-parser');
 const axios = require('axios');
 const cors = require('cors');
+const routes = require('./routes');
 
 const app = express();
 
@@ -88,7 +89,6 @@ app.get('/api/logout', async (req, res)=> {
   }
 });
 
-
 app.post('/api/register', async (req, res) => {
   try {
     let url = `${host_api}/register`;
@@ -108,6 +108,9 @@ app.get('/api/products', async (req, res)=>{
     headers: {
       withCredentials:true,
       Cookie: headers.cookie
+    },
+    params : {
+      ...req.query
     }
   };
 
@@ -118,7 +121,6 @@ app.get('/api/products', async (req, res)=>{
     res.status(500).json({error});
   }
 });
-
 
 app.get('/api/product', async (req, res) => {
   let url = `${host_api}/product`;
@@ -167,9 +169,30 @@ app.put('/api/product', async (req, res) => {
   }
 });
 
-app.get('/api/stores', async (req, res) => {
+app.post('/api/product', async (req, res) => {
+  let url = `${host_api}/product`;
+  let headers = req.headers;
+  let config = {
+    url,
+    headers: {
+      withCredentials:true,
+      Cookie: headers.cookie
+    },
+    method:'POST',
+    data: req.body
+  };
 
-  let url = `${host_api}/stores`;
+  try {
+    let response = await makeRequest(config);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({error});
+  }
+});
+
+app.get('/api/store', async (req, res) => {
+
+  let url = `${host_api}/store`;
   if(req.query.uuid) {
     url = `${url}?uuid=${req.query.uuid}`;
   }
@@ -191,11 +214,7 @@ app.get('/api/stores', async (req, res) => {
   }
 });
 
-app.get('/api/store', async (req, res) => {
-
-  console.log(req.query.uuid);
-  res.json('');
-  return;
+app.get('/api/stores', async (req, res) => {
   let url = `${host_api}/stores`;
   let headers = req.headers;
   let config = {
@@ -204,6 +223,51 @@ app.get('/api/store', async (req, res) => {
       withCredentials:true,
       Cookie: headers.cookie
     }
+  };
+
+  try {
+    let response = await makeRequest(config);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({error});
+  }
+});
+
+app.put('/api/store', async (req, res) => {
+  let url = `${host_api}/store`;
+  let headers = req.headers;
+  let config = {
+    url,
+    headers: {
+      withCredentials:true,
+      Cookie: headers.cookie
+    },
+    method:'PUT',
+    data: req.body,
+    params: {
+      uuid: req.query.uuid
+    }
+  };
+
+  try {
+    let response = await makeRequest(config);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({error});
+  }
+});
+
+app.post('/api/store', async (req, res) => {
+  let url = `${host_api}/store`;
+  let headers = req.headers;
+  let config = {
+    url,
+    headers: {
+      withCredentials:true,
+      Cookie: headers.cookie
+    },
+    method:'POST',
+    data: req.body
   };
 
   try {
