@@ -2,7 +2,6 @@ const express = require('express');
 var cookieParser = require('cookie-parser');
 const axios = require('axios');
 const cors = require('cors');
-const routes = require('./routes');
 
 const app = express();
 
