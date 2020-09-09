@@ -1,11 +1,12 @@
+
 let express = require('express');
 let makeRequest = require('../makeRequest');
 const router = express.Router();
 const { API_HOST } = require('../config');
 
 // list
-router.get('/products', async (req, res) => {
-  let url = `${API_HOST}/products`;
+router.get("/stores", async (req, res) => {
+  let url = `${API_HOST}/stores`;
   let headers = req.headers;
   let config = {
     url,
@@ -16,20 +17,20 @@ router.get('/products', async (req, res) => {
     params: {
       ...req.query,
     },
-  };
+  }
 
   try {
     let response = await makeRequest(config);
     res.json(response.data);
   } catch (error) {
-    res.status(500).json({error});
+    res.status(500).json({ error });
   }
 });
 
 // single
-router.get('/product', async (req, res) => {
-  let url = `${API_HOST}/product`;
-  if(req.query.uuid) {
+router.get("/store", async (req, res) => {
+  let url = `${API_HOST}/store`;
+  if (req.query.uuid) {
     url = `${url}?uuid=${req.query.uuid}`;
   }
 
@@ -37,22 +38,22 @@ router.get('/product', async (req, res) => {
   let config = {
     url,
     headers: {
-      withCredentials:true,
-      Cookie: headers.cookie
-    }
+      withCredentials: true,
+      Cookie: headers.cookie,
+    },
   };
 
   try {
     let response = await makeRequest(config);
     res.json(response.data);
   } catch (error) {
-    res.status(500).json({error});
+    res.status(500).json({ error });
   }
 });
 
 // update
-router.put("/product", async (req, res) => {
-  let url = `${API_HOST}/product`;
+router.put("/store", async (req, res) => {
+  let url = `${API_HOST}/store`;
   let headers = req.headers;
   let config = {
     url,
@@ -76,8 +77,8 @@ router.put("/product", async (req, res) => {
 });
 
 // create
-router.post("/product", async (req, res) => {
-  let url = `${host_api}/product`;
+router.post("/store", async (req, res) => {
+  let url = `${API_HOST}/store`;
   let headers = req.headers;
   let config = {
     url,
