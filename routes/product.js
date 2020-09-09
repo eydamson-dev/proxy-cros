@@ -77,7 +77,7 @@ router.put("/product", async (req, res) => {
 
 // create
 router.post("/product", async (req, res) => {
-  let url = `${host_api}/product`;
+  let url = `${API_HOST}/product`;
   let headers = req.headers;
   let config = {
     url,

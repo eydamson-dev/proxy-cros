@@ -11,10 +11,11 @@ async function makeRequest(config) {
         * The request was made and the server responded with a
         * status code that falls out of the range of 2xx
         */
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-        reject(error.response.data);
+        let status = error.response.status;
+        let errData = error.response.data;
+        console.log(`Error status: ${status}`);
+        console.log(`Error data: ${errData}`);
+        reject({status, data:errData});
       } else if (error.request) {
         /*
         * The request was made but no response was received, `error.request`
