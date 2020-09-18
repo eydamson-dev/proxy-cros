@@ -18,9 +18,14 @@ router.post("/login", async (req, res) => {
     let cookieVal = cookie.split("=")[1];
 
     res.cookie("app-dev.pem.blss.com.au", cookieVal);
-    res.json(response.data);
+    res.json({
+      ...response.data,
+      data: {
+        status: 2
+      }
+    });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(error.status).json({ error });
   }
 });
 
